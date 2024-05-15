@@ -1,2 +1,17 @@
 version: "3"
 services:
+  citus:
+    image: citusdata/citus
+    env_file:
+      - docker.env
+    ports:
+      - "5433:5432"
+  project:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./static:/static
+    depends_on:
+      citus:
+        condition: service_completed_successfully
